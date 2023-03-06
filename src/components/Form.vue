@@ -1,6 +1,6 @@
 <template>
-  <el-card class="form-card">
-    <el-form :model="formData">
+  <el-card class="form-card" >
+    <el-form :model="formData" :rules="rules" label-position="top">
       <el-form-item label="Type" prop="type">
         <el-select class="type-select" v-model="formData.type" placeholder="Choose type...">
           <el-option label="Income" value="INCOME"/>
@@ -26,6 +26,14 @@ export default {
       type: 'INCOME',
       comment: '',
       value: 0,
+    },
+    rules: {
+      type: [{ required: true, message: 'Please select type', trigger: 'blur' }],
+      comment: [{ required: true, message: 'Please input comment', trigger: 'blur' }],
+      value: [
+        { required: true, message: 'Please input value', trigger: 'change' },
+        { type: 'number', message: 'Value must be a number', trigger: 'change' },
+      ],
     },
   }),
   methods: {
