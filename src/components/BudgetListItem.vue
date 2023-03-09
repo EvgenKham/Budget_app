@@ -10,7 +10,6 @@
 export default {
   name: "BudgetListItem",
   data: () => ({
-    one: 'sdsd',
   }),
   props: {
     item: {

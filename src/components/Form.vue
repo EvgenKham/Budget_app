@@ -40,6 +40,13 @@ export default {
     onSubmit() {
       this.$refs.addItemForm.validate((valid) => {
         if(valid) {
+          const budgetInputType = this.formData.type.toLowerCase();
+          const spend = 'outcome';
+          //Add a sign "-", if the input value "Outcome" doesn't have it
+          if(budgetInputType === spend){
+            this.formData.value = -(this.formData.value);
+          }
+
           this.$emit('submitForm', { ...this.formData });
           this.$refs.addItemForm.resetFields();
         }
