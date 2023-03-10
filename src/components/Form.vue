@@ -40,17 +40,22 @@ export default {
     onSubmit() {
       this.$refs.addItemForm.validate((valid) => {
         if(valid) {
-          const budgetInputType = this.formData.type.toLowerCase();
-          const spend = 'outcome';
-          //Add a sign "-", if the input value "Outcome" doesn't have it
-          if(budgetInputType === spend){
-            this.formData.value = -(this.formData.value);
-          }
-
+          this.formData.value = this.isCorrectSign();
           this.$emit('submitForm', { ...this.formData });
           this.$refs.addItemForm.resetFields();
         }
       });
+    },
+
+    //Add a sign "-", if the input value "Outcome" doesn't have it
+    isCorrectSign(){
+      const budgetInputType = this.formData.type.toLowerCase();
+      const spend = 'outcome';
+      let value = this.formData.value;
+        if(budgetInputType === spend){
+          value = -(this.formData.value);
+        }
+      return value;
     }
   }
 }

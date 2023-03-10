@@ -7,24 +7,22 @@
     </div>
 
     <span class="budget-comment">{{ item.comment }}</span>
+    
     <div class="budget-value">
       <span class="positive-value" v-if="item.value > 0">{{ item.value }}</span>
       <span class="negative-value" v-else>{{ item.value }}</span>
     </div>
 
-    <el-button type="danger" size="mini" @click="dialogVisible = true"
-      >Delete</el-button
-    >
+    <el-button type="danger" size="mini" @click="dialogVisible = true">Delete</el-button>
 
     <el-dialog title="Delete item" :visible.sync="dialogVisible" width="250px">
       <span>You want to delete this element?</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="deleteItem(item.id)"
-          >Confirm</el-button
-        >
+        <el-button type="primary" @click="deleteItem(item.id)">Confirm</el-button>
       </span>
     </el-dialog>
+
   </div>
 </template>
 

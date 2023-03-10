@@ -2,7 +2,10 @@
   <div id="app">
     <Form @submitForm="onSubmit"></Form>
     <TotalBalance :total="totalBalance"></TotalBalance>
-    <BudgetList :list="list" @deleteItem="onDeleteItem"></BudgetList>
+    <BudgetList
+      :list="list"
+      @deleteItem="onDeleteItem">
+    </BudgetList>
   </div>
 </template>
 
@@ -33,6 +36,10 @@ export default {
         id: 2,
       },
     },
+    sortedList: {
+      type: Object,
+      default: () => ({}),
+    },
   }),
   computed: {
     totalBalance() {
@@ -40,7 +47,7 @@ export default {
         (acc, item) => acc + item.value,
         0
       );
-    }
+    },
   },
   methods: {
     onDeleteItem(id) {
@@ -53,7 +60,7 @@ export default {
       };
 
       this.$set(this.list, newObj.id, newObj);
-    }
+    },
   }
 }
 </script>
