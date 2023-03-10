@@ -21,21 +21,32 @@
 <script>
 export default {
   name: 'Form',
-  data: () => ({
-    formData: {
-      type: 'INCOME',
-      comment: '',
-      value: 0,
-    },
-    rules: {
-      type: [{ required: true, message: 'Please select type', trigger: 'blur' }],
-      comment: [{ required: true, message: 'Please input comment', trigger: 'change' }],
-      value: [
-        { required: true, message: 'Please input value', trigger: 'change' },
-        { type: 'number', message: 'Value must be a number', trigger: 'change' },
-      ],
-    },
-  }),
+  data() {
+    // Custom validation. Use custom validation rules from framework 'Element ui'
+    const checkValue = (rule, value, callback) => {
+      if (value === 0) {
+          return callback(new Error('Value can\'t be \'0\''));
+      } else {
+          callback();
+      }
+    };
+    return {
+      formData: {
+        type: 'INCOME',
+        comment: '',
+        value: 0,
+      },
+      rules: {
+        type: [{ required: true, message: 'Please select type', trigger: 'blur' }],
+        comment: [{ required: true, message: 'Please input comment', trigger: 'blur' }],
+        value: [
+          { required: true, message: 'Please input value', trigger: 'change' },
+          { type: 'number', message: 'Value must be a number', trigger: 'change' },
+          { validator: checkValue, trigger: 'blur' },
+        ],
+      },
+    }
+  },
   methods: {
     onSubmit() {
       this.$refs.addItemForm.validate((valid) => {
