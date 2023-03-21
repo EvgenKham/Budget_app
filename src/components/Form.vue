@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: 'Form',
+  name: "Form",
   data() {
     // Custom validation. Use custom validation rules from framework 'Element ui'
     const checkValue = (rule, value, callback) => {
