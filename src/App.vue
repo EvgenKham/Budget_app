@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <Form @submitForm="onSubmit"></Form>
-    <TotalBalance :total="totalBalance"></TotalBalance>
+    <TotalBalance :total="getTotalBalance"></TotalBalance>
     <BudgetList
-      :list="list"
+      :list="getList"
       @deleteItem="onDeleteItem">
     </BudgetList>
   </div>
@@ -13,6 +13,8 @@
 import BudgetList from '@/components/BudgetList';
 import TotalBalance from '@/components/TotalBalance';
 import Form from '@/components/Form';
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: 'App',
@@ -22,44 +24,27 @@ export default {
     Form,
   },
   data: () => ({
-    list: {
-      1: {
-        type: 'INCOME',
-        value: 100,
-        comment: 'Some comment',
-        id: 1,
-      },
-      2: {
-        type: 'OUTCOME',
-        value: -50,
-        comment: 'Some outcome comment',
-        id: 2,
-      },
-    },
     sortedList: {
       type: Object,
       default: () => ({}),
     },
   }),
   computed: {
-    totalBalance() {
-      return Object.values(this.list).reduce(
-        (acc, item) => acc + item.value,
-        0
-      );
-    },
+    ...mapGetters("transactions", [
+      "getTotalBalance",
+      "getList",
+    ]),
   },
   methods: {
+    ...mapActions("transactions", [
+      "addNewTransaction",
+      "deleteTransacrion"
+    ]),
     onDeleteItem(id) {
-      this.$delete(this.list, id);
+      this.deleteTransacrion(id);
     },
     onSubmit(data) {
-      const newObj = {
-        ...data,
-        id: String(Math.random()),
-      };
-
-      this.$set(this.list, newObj.id, newObj);
+      this.addNewTransaction(data);
     },
   }
 }

@@ -1,0 +1,58 @@
+import Vue from "vue";
+
+const transacionsStore = {
+  namespaced: true,
+  state: {
+    list: {
+      1: {
+        type: 'INCOME',
+        value: 100,
+        comment: 'Some comment',
+        id: 1,
+      },
+      2: {
+        type: 'OUTCOME',
+        value: -50,
+        comment: 'Some outcome comment',
+        id: 2,
+      },
+    },
+  },
+  getters: {
+    getList: (state) => {
+      return state.list;
+    },
+    getTotalBalance: (state) => {
+      return Object.values(state.list).reduce(
+        (acc, item) => acc + item.value,
+        0
+      );
+    },
+  },
+  mutations: {
+    ADD_TRANSACTION ( state, newTrans ) {
+      Vue.set( state.list, newTrans.id, newTrans );
+    },
+    DELETE_TRANSACTION (state, id) {
+      Vue.delete( state.list, id);
+    }
+  },
+  actions: {
+    addNewTransaction ({ commit }, data) {
+      const newTrans = {
+        ...data,
+        id: String(Math.random()),
+      };
+      commit("ADD_TRANSACTION", newTrans);
+    },
+    deleteTransacrion ({ commit }, id) {
+      commit("DELETE_TRANSACTION", id);
+    },
+    // sotrList () {
+
+    // },
+  },
+
+};
+
+export default transacionsStore;
