@@ -3,8 +3,9 @@
     <Form @submitForm="onSubmit"></Form>
     <TotalBalance :total="getTotalBalance"></TotalBalance>
     <BudgetList
-      :list="getList"
-      @deleteItem="onDeleteItem">
+      :list="sort"
+      @deleteItem="onDeleteItem"
+      @sotrList="onSortList">
     </BudgetList>
   </div>
 </template>
@@ -33,7 +34,14 @@ export default {
     ...mapGetters("transactions", [
       "getTotalBalance",
       "getList",
+      "filteredList",
     ]),
+    sort(type) {
+      if(!this.sortedList){
+        return this.filteredList(type);
+      }
+      return this.sortedList;
+    }
   },
   methods: {
     ...mapActions("transactions", [
@@ -46,6 +54,9 @@ export default {
     onSubmit(data) {
       this.addNewTransaction(data);
     },
+    onSortList(type) {
+      this.sortedList = this.filteredList(type);
+    }
   }
 }
 </script>

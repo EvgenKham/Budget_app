@@ -17,6 +17,10 @@ const transacionsStore = {
         id: 2,
       },
     },
+    sortedList: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   getters: {
     getList: (state) => {
@@ -28,13 +32,54 @@ const transacionsStore = {
         0
       );
     },
+    filteredList: (state, type) => {
+      const listAll = Object.values(state.list);
+      let filtedArr = null;
+
+      if(type === 'ALL') {
+        filtedArr = state.list;
+      } else {
+        filtedArr = listAll.filter( item => item.type === type );
+        // converting the array to the object because in start 'sortedList' is object (This isn't necessary)
+        // Vue.set(state.sortedList, resultArr);
+        // state.sortedList = { ...resultArr};
+      }
+
+      return filtedArr;
+      // for (let item in resultArr) {
+        // Vue.set(state.sortedList, item.id, item);
+      // }
+      // Vue.set( state.sortedList, ...sortList);
+      // console.log(resultArr);
+    },
   },
   mutations: {
-    ADD_TRANSACTION ( state, newTrans ) {
+    ADD_TRANSACTION (state, newTrans ) {
       Vue.set( state.list, newTrans.id, newTrans );
     },
     DELETE_TRANSACTION (state, id) {
       Vue.delete( state.list, id);
+    },
+    SORT_TRANSACTIONS (state, type) {
+      const listAll = Object.values(state.list);
+      let resultArr = null;
+
+      if(type === 'ALL') {
+        resultArr = state.list;
+      } else {
+        resultArr = listAll.filter( item => item.type === type );
+        // converting the array to the object because in start 'sortedList' is object (This isn't necessary)
+        // Vue.set(state.sortedList, resultArr);
+        // state.sortedList = { ...resultArr};
+      }
+
+      state.sortedList = resultArr;
+      // for (let item in resultArr) {
+        // Vue.set(state.sortedList, item.id, item);
+      // }
+      // Vue.set( state.sortedList, ...sortList);
+      // console.log(resultArr);
+      console.log(state.sortedList);
     }
   },
   actions: {
@@ -48,11 +93,10 @@ const transacionsStore = {
     deleteTransacrion ({ commit }, id) {
       commit("DELETE_TRANSACTION", id);
     },
-    // sotrList () {
-
-    // },
+    sotrList ({ commit }, type) {
+      commit("SORT_TRANSACTIONS", type);
+    },
   },
-
 };
 
 export default transacionsStore;
