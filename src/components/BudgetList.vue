@@ -18,7 +18,7 @@
       </template>
 
       <el-alert v-else type="info" :title="emptyTitle" :closable="false"/>
-      
+
     </el-card>
   </div>
 </template>

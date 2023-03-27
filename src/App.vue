@@ -30,9 +30,6 @@ export default {
       default: () => ({}),
     },
   }),
-  created() {
-    this.list = this.getList;
-  },
   computed: {
     ...mapGetters("transactions", [
       "getTotalBalance",
@@ -54,7 +51,6 @@ export default {
     },
     onSortList(type) {
       this.changeTypeSort(type);
-      this.list = filteredList;
     }
   }
 }
