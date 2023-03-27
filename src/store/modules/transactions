@@ -1,6 +1,6 @@
 import Vue from "vue";
 
-const transacionsStore = {
+const transactionsStore = {
   namespaced: true,
   state: {
     list: {
@@ -17,9 +17,8 @@ const transacionsStore = {
         id: 2,
       },
     },
-    sortedList: {
-      type: Object,
-      default: () => ({}),
+    sortType: {
+      value: "ALL",
     },
   },
   getters: {
@@ -32,25 +31,18 @@ const transacionsStore = {
         0
       );
     },
-    filteredList: (state, type) => {
-      const listAll = Object.values(state.list);
-      let filtedArr = null;
-
-      if(type === 'ALL') {
-        filtedArr = state.list;
-      } else {
-        filtedArr = listAll.filter( item => item.type === type );
-        // converting the array to the object because in start 'sortedList' is object (This isn't necessary)
-        // Vue.set(state.sortedList, resultArr);
-        // state.sortedList = { ...resultArr};
+    filteredList: ({list, sortType}) => {
+      
+      if (sortType.value !== "ALL") {
+        return Object.values(list)
+          .filter((item) => item.type === sortType.value)
+          .reduce((acc, item) => {
+            acc[item.id] = item;
+            return acc;
+          }, {});
       }
 
-      return filtedArr;
-      // for (let item in resultArr) {
-        // Vue.set(state.sortedList, item.id, item);
-      // }
-      // Vue.set( state.sortedList, ...sortList);
-      // console.log(resultArr);
+      return list;
     },
   },
   mutations: {
@@ -60,26 +52,8 @@ const transacionsStore = {
     DELETE_TRANSACTION (state, id) {
       Vue.delete( state.list, id);
     },
-    SORT_TRANSACTIONS (state, type) {
-      const listAll = Object.values(state.list);
-      let resultArr = null;
-
-      if(type === 'ALL') {
-        resultArr = state.list;
-      } else {
-        resultArr = listAll.filter( item => item.type === type );
-        // converting the array to the object because in start 'sortedList' is object (This isn't necessary)
-        // Vue.set(state.sortedList, resultArr);
-        // state.sortedList = { ...resultArr};
-      }
-
-      state.sortedList = resultArr;
-      // for (let item in resultArr) {
-        // Vue.set(state.sortedList, item.id, item);
-      // }
-      // Vue.set( state.sortedList, ...sortList);
-      // console.log(resultArr);
-      console.log(state.sortedList);
+    CHANGE_TYPE_SORT (state, type) {
+      state.sortType.value = type;
     }
   },
   actions: {
@@ -90,13 +64,13 @@ const transacionsStore = {
       };
       commit("ADD_TRANSACTION", newTrans);
     },
-    deleteTransacrion ({ commit }, id) {
+    deleteTransaction ({ commit }, id) {
       commit("DELETE_TRANSACTION", id);
     },
-    sotrList ({ commit }, type) {
-      commit("SORT_TRANSACTIONS", type);
+    changeTypeSort ({ commit }, type) {
+      commit("CHANGE_TYPE_SORT", type);
     },
   },
 };
 
-export default transacionsStore;
+export default transactionsStore;

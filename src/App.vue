@@ -3,7 +3,7 @@
     <Form @submitForm="onSubmit"></Form>
     <TotalBalance :total="getTotalBalance"></TotalBalance>
     <BudgetList
-      :list="sort"
+      :list="filteredList"
       @deleteItem="onDeleteItem"
       @sotrList="onSortList">
     </BudgetList>
@@ -25,37 +25,36 @@ export default {
     Form,
   },
   data: () => ({
-    sortedList: {
+    list: {
       type: Object,
       default: () => ({}),
     },
   }),
+  created() {
+    this.list = this.getList;
+  },
   computed: {
     ...mapGetters("transactions", [
       "getTotalBalance",
       "getList",
       "filteredList",
     ]),
-    sort(type) {
-      if(!this.sortedList){
-        return this.filteredList(type);
-      }
-      return this.sortedList;
-    }
   },
   methods: {
     ...mapActions("transactions", [
       "addNewTransaction",
-      "deleteTransacrion"
+      "deleteTransaction",
+      "changeTypeSort"
     ]),
     onDeleteItem(id) {
-      this.deleteTransacrion(id);
+      this.deleteTransaction(id);
     },
     onSubmit(data) {
       this.addNewTransaction(data);
     },
     onSortList(type) {
-      this.sortedList = this.filteredList(type);
+      this.changeTypeSort(type);
+      this.list = filteredList;
     }
   }
 }

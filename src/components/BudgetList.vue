@@ -1,13 +1,14 @@
 <template>
   <div class="budget-list-wrap">
     <el-card :header="header">
-      <template v-if="!isEmpty">
-        <div class="btn-sort">
-          <el-button type="primary" round @click="sortList('INCOME')">Income</el-button>
-          <el-button type="primary" round @click="sortList('OUTCOME')">Outcome</el-button>
-          <el-button type="primary" round @click="sortList('ALL')">All</el-button>
-        </div>
 
+      <div class="btn-sort">
+        <el-button type="primary" round @click="sortList('INCOME')">Income</el-button>
+        <el-button type="primary" round @click="sortList('OUTCOME')">Outcome</el-button>
+        <el-button type="primary" round @click="sortList('ALL')">All</el-button>
+      </div>
+
+      <template v-if="!isEmpty">
         <div v-for="(item, prop) in list" :key="prop">
           <BudgetListItem
             :item="item"
@@ -15,7 +16,9 @@
           </BudgetListItem>
         </div>
       </template>
+
       <el-alert v-else type="info" :title="emptyTitle" :closable="false"/>
+      
     </el-card>
   </div>
 </template>
@@ -37,16 +40,8 @@ export default {
   data: () => ({
     header: 'Budget List',
     emptyTitle: 'Empty List',
-    // sortedList: {
-    //   type: Object,
-    //   default: () => ({}),
-    // },
   }),
-  // created() {
-  //   this.sortedList = this.getList;
-  // },
   computed: {
-    // ...mapGetters("transactions",["getList"]),
     isEmpty() {
       return !Object.keys(this.list).length;
     }
